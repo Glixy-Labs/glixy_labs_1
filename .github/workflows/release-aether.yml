@@ -5,11 +5,6 @@ on:
     tags:
       - 'aether-v*'
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version tag to publish (e.g. aether-v0.4.2)'
-        required: true
-        default: 'aether-v0.4.2'
 
 permissions:
   contents: write
@@ -31,8 +26,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
-          cache-dependency-path: 'aether/requirements.txt'
 
       - name: Install dependencies
         run: |
@@ -42,22 +35,7 @@ jobs:
 
       - name: Build EXE with PyInstaller
         run: |
-          pyinstaller `
-            --name "GlixyAether" `
-            --onefile `
-            --add-data "aether/web;aether/web" `
-            --hidden-import uvicorn.logging `
-            --hidden-import uvicorn.loops `
-            --hidden-import uvicorn.loops.auto `
-            --hidden-import uvicorn.protocols `
-            --hidden-import uvicorn.protocols.http `
-            --hidden-import uvicorn.protocols.http.auto `
-            --hidden-import uvicorn.protocols.websockets `
-            --hidden-import uvicorn.protocols.websockets.auto `
-            --hidden-import uvicorn.lifespan `
-            --hidden-import uvicorn.lifespan.on `
-            -c `
-            aether-launcher.py
+          pyinstaller --name "GlixyAether" --onefile --add-data "aether/web;aether/web" --hidden-import uvicorn.logging --hidden-import uvicorn.loops --hidden-import uvicorn.loops.auto --hidden-import uvicorn.protocols --hidden-import uvicorn.protocols.http --hidden-import uvicorn.protocols.http.auto --hidden-import uvicorn.protocols.websockets --hidden-import uvicorn.protocols.websockets.auto --hidden-import uvicorn.lifespan --hidden-import uvicorn.lifespan.on -c aether-launcher.py
           Get-ChildItem dist
 
       - name: Install Inno Setup
@@ -78,11 +56,10 @@ jobs:
             aether/dist/GlixyAether-Setup.exe
 
       - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/aether-v')
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/aether-v') || github.event_name == 'workflow_dispatch'
         with:
-          tag_name: ${{ github.ref_name != '' && github.ref_name || inputs.version }}
-          name: 'Glixy Aether ${{ github.ref_name != '' && github.ref_name || inputs.version }}'
+          name: 'Glixy Aether ${{ github.ref_name }}'
           body: |
             ## Glixy Aether — Windows release
 
@@ -100,12 +77,8 @@ jobs:
             - CLI: `aether chat`, `aether memory`, `aether start`
 
             ### Configure a provider
-            On first run, set your provider in **Settings** or via env var:
-            ```powershell
-            $env:OPENAI_API_KEY = "sk-..."
-            $env:ANTHROPIC_API_KEY = "sk-ant-..."
-            ```
-            For free local LLMs, install [Ollama](https://ollama.com).
+            On first run, set your provider in Settings or via env var.
+            For free local LLMs, install Ollama from <https://ollama.com>.
 
             ---
             Source: [`aether/`](https://github.com/Glixy-Labs/glixy_labs_1/tree/main/aether) — Apache 2.0.
@@ -114,5 +87,3 @@ jobs:
             aether/dist/GlixyAether.exe
           draft: false
           prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
