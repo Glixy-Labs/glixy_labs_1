@@ -3,7 +3,7 @@
 ; with Inno Setup (https://jrsoftware.org/isinfo.php).
 
 #define MyAppName "Glixy Aether"
-#define MyAppVersion "0.4.2"
+#define MyAppVersion "0.4.3"
 #define MyAppPublisher "Glixy Labs"
 #define MyAppURL "https://glixylabs.com/product-aether.html"
 #define MyAppExeName "GlixyAether.exe"

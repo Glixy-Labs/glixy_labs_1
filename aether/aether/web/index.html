@@ -11,6 +11,50 @@
 </head>
 <body class="local-body">
 
+  <!-- ============ WELCOME / SIGNUP OVERLAY (first run) ============ -->
+  <div id="welcomeOverlay" class="welcome-overlay" style="display:none">
+    <div class="welcome-card">
+      <div class="welcome-brand">
+        <span class="welcome-mark"></span>
+        <h1>Glixy <em>Aether</em></h1>
+      </div>
+      <p class="welcome-sub">Your private AI assistant — chat, agents, memory, tools.</p>
+
+      <div class="welcome-tabs">
+        <button class="welcome-tab active" data-mode="signup">Create account</button>
+        <button class="welcome-tab" data-mode="login">Sign in</button>
+      </div>
+
+      <form id="welcomeForm" class="welcome-form" data-mode="signup" autocomplete="on">
+        <div class="welcome-row-2" id="welcomeNameRow">
+          <label class="welcome-field">
+            <span>First name</span>
+            <input type="text" name="first" placeholder="Aarav" required />
+          </label>
+          <label class="welcome-field">
+            <span>Last name</span>
+            <input type="text" name="last" placeholder="Shah" required />
+          </label>
+        </div>
+        <label class="welcome-field">
+          <span>Email</span>
+          <input type="email" name="email" placeholder="you@company.com" required autocomplete="email" />
+        </label>
+        <label class="welcome-field">
+          <span>Password</span>
+          <input type="password" name="password" placeholder="At least 8 characters" minlength="8" required autocomplete="new-password" />
+        </label>
+        <div id="welcomeError" class="welcome-error" hidden></div>
+        <button type="submit" class="welcome-submit" id="welcomeSubmit">Create account</button>
+      </form>
+
+      <div class="welcome-bottom">
+        <button id="welcomeSkip" class="welcome-link">Continue without account — local only →</button>
+      </div>
+      <p class="welcome-fine">By signing up you agree to the Glixy Labs Terms &amp; Privacy. Your account syncs across devices.</p>
+    </div>
+  </div>
+
   <!-- SIDEBAR -->
   <aside class="loc-side">
     <div class="loc-brand">
@@ -156,5 +200,6 @@
   </main>
 
   <script src="/static/app.js"></script>
+  <script src="/static/welcome.js"></script>
 </body>
 </html>
