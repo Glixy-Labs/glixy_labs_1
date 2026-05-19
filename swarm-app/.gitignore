@@ -1,0 +1,13 @@
+node_modules
+dist
+.DS_Store
+*.local
+.vite
+
+# Rust / Tauri build artifacts
+src-tauri/target
+src-tauri/gen
+src-tauri/Cargo.lock
+
+# Icons are committed — regenerate via:
+#   npx @tauri-apps/cli icon assets/glixyswarm-1024.png

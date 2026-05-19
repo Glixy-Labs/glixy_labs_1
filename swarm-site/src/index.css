@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background: #fff8f1;
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+  }
+
+  .ring-soft { box-shadow: inset 0 0 0 1px rgba(26,20,16,0.06); }
+
+  .gradient-text {
+    background: linear-gradient(110deg, #ff6a1f 0%, #ff8a3d 50%, #ffb37a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .shimmer-text {
+    background: linear-gradient(90deg, #4a3f37 0%, #1a1410 50%, #4a3f37 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 3s linear infinite;
+  }
+
+  .dot-bg {
+    background-image: radial-gradient(rgba(26,20,16,0.08) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  .serif-em em {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(26,20,16,0.15); border-radius: 3px; }
+}
+
+button:focus-visible, a:focus-visible {
+  outline: 2px solid #ff6a1f;
+  outline-offset: 3px;
+  border-radius: 12px;
+}
+
+::selection {
+  background: rgba(255, 106, 31, 0.25);
+  color: #1a1410;
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Glixyswarm",
+  "version": "0.1.0",
+  "identifier": "com.glixylabs.glixyswarm",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Glixyswarm",
+        "width": 1180,
+        "height": 760,
+        "minWidth": 880,
+        "minHeight": 580,
+        "resizable": true,
+        "fullscreen": false,
+        "decorations": true,
+        "transparent": false,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "category": "DeveloperTool",
+    "shortDescription": "Multi-agent orchestration for the desktop.",
+    "longDescription": "Glixyswarm is an open-source multi-agent orchestration runtime. Build, run, and observe swarms of AI agents — locally, privately, free forever.",
+    "copyright": "Copyright (c) 2026 Glixy Labs",
+    "publisher": "Glixy Labs",
+    "homepage": "https://glixylabs.com/swarm/",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "wix": {
+        "language": "en-US"
+      },
+      "nsis": {
+        "installerIcon": "icons/icon.ico",
+        "installMode": "perMachine"
+      }
+    },
+    "macOS": {
+      "minimumSystemVersion": "13.0"
+    },
+    "linux": {
+      "appimage": {
+        "bundleMediaFramework": false
+      }
+    }
+  }
+}

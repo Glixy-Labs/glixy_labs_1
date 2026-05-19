@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glixy Aether — local dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/app.css" />
+</head>
+<body class="local-body">
+
+  <!-- SIDEBAR -->
+  <aside class="loc-side">
+    <div class="loc-brand">
+      <span class="loc-mark"></span>
+      <span class="loc-text">Glixy <small>Aether</small></span>
+      <span class="loc-version" id="locVersion">v0.4.2</span>
+    </div>
+
+    <button class="loc-new" id="newChatBtn">+ New chat</button>
+
+    <nav class="loc-nav">
+      <button class="loc-tab active" data-tab="chat"><span>◈</span> Chat</button>
+      <button class="loc-tab" data-tab="agents"><span>⌬</span> Agents</button>
+      <button class="loc-tab" data-tab="memory"><span>⛁</span> Memory</button>
+      <button class="loc-tab" data-tab="tools"><span>⚙</span> Tools</button>
+      <button class="loc-tab" data-tab="runs"><span>📊</span> Runs</button>
+      <button class="loc-tab" data-tab="settings"><span>⚙</span> Settings</button>
+    </nav>
+
+    <div class="loc-history">
+      <p class="loc-label">History</p>
+      <div id="convList"></div>
+    </div>
+
+    <div class="loc-status" id="locStatus">
+      <span class="loc-status-dot"></span>
+      <div>
+        <p>Connecting…</p>
+        <p class="loc-status-meta" id="locProvider">—</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="loc-main">
+    <header class="loc-top">
+      <div class="loc-search">
+        <span>⌕</span>
+        <input type="text" placeholder="Search anything…" />
+      </div>
+      <div class="loc-top-right">
+        <select id="modelSelect" class="loc-select">
+          <option value="">(default)</option>
+        </select>
+        <button class="loc-icon" id="docsBtn" title="Docs">?</button>
+      </div>
+    </header>
+
+    <!-- TAB: chat -->
+    <section class="loc-pane active" data-pane="chat">
+      <div class="loc-hero">
+        <h1>Hello, <em id="locHello">there</em>.</h1>
+        <p>Ask anything. I can browse the web, run code, read your files, and remember.</p>
+        <div class="loc-quick">
+          <button class="loc-q" data-prompt="Build me a full-stack todo app — Next.js + Postgres + login.">⚡ Create full-stack app</button>
+          <button class="loc-q" data-prompt="Search the web for the latest news on AI agents and summarize the top 5 stories.">🔍 Research the web</button>
+          <button class="loc-q" data-prompt="List the files in my Downloads folder and tell me which are over 100MB.">📁 Inspect my files</button>
+          <button class="loc-q" data-prompt="Remember that I prefer terse summaries with bullet points.">⛁ Save a preference</button>
+        </div>
+      </div>
+
+      <div class="loc-chat" id="locChat"></div>
+
+      <form class="loc-input" id="locInput">
+        <button type="button" class="loc-input-add" title="Attach">+</button>
+        <input type="text" id="locPrompt" placeholder="Message Aether — ⌘ Enter to send…" autocomplete="off" />
+        <label class="loc-input-tools" title="Use tools">
+          <input type="checkbox" id="useTools" checked /> tools
+        </label>
+        <button type="submit" class="loc-input-send">Send →</button>
+      </form>
+    </section>
+
+    <!-- TAB: agents -->
+    <section class="loc-pane" data-pane="agents">
+      <div class="loc-pane-head">
+        <h2>Multi-agent crew</h2>
+        <p>Compose a plan-then-delegate run. Each agent works in turn, passing findings forward.</p>
+      </div>
+      <form class="loc-crew" id="crewForm">
+        <label>Task
+          <textarea id="crewTask" rows="3" placeholder="e.g. Research India's top 5 AI startups and write a 1-pager."></textarea>
+        </label>
+        <button type="submit" class="loc-input-send">Run crew →</button>
+      </form>
+      <div class="loc-crew-trace" id="crewTrace"></div>
+    </section>
+
+    <!-- TAB: memory -->
+    <section class="loc-pane" data-pane="memory">
+      <div class="loc-pane-head">
+        <h2>Memory</h2>
+        <p>Long-term notes, preferences and facts Aether remembers across sessions.</p>
+      </div>
+      <form class="loc-mem-form" id="memForm">
+        <select id="memType">
+          <option value="note">note</option>
+          <option value="identity">identity</option>
+          <option value="preference">preference</option>
+          <option value="project">project</option>
+          <option value="event">event</option>
+        </select>
+        <input type="text" id="memContent" placeholder="What should Aether remember?" />
+        <button type="submit">Save</button>
+      </form>
+      <ul class="loc-mem-list" id="memList"></ul>
+    </section>
+
+    <!-- TAB: tools -->
+    <section class="loc-pane" data-pane="tools">
+      <div class="loc-pane-head">
+        <h2>Connected tools</h2>
+        <p>Aether agents can call any of these. All run locally on your machine.</p>
+      </div>
+      <ul class="loc-tools" id="toolsList"></ul>
+    </section>
+
+    <!-- TAB: runs -->
+    <section class="loc-pane" data-pane="runs">
+      <div class="loc-pane-head">
+        <h2>Recent runs</h2>
+        <p>Each multi-agent run is logged with steps, tokens and trace.</p>
+      </div>
+      <table class="loc-runs">
+        <thead><tr><th>Run</th><th>Task</th><th>Agents</th><th>Steps</th><th>Tokens</th><th>Status</th><th>Duration</th></tr></thead>
+        <tbody id="runsBody"></tbody>
+      </table>
+    </section>
+
+    <!-- TAB: settings -->
+    <section class="loc-pane" data-pane="settings">
+      <div class="loc-pane-head">
+        <h2>Settings</h2>
+        <p>Read from environment variables and <code>~/.aether/config.toml</code>. To change, edit your env and restart.</p>
+      </div>
+      <pre class="loc-settings" id="settingsBlock">loading…</pre>
+      <p class="loc-tip">
+        Use <code>AETHER_PROVIDER</code>, <code>AETHER_MODEL</code>,
+        <code>OPENAI_API_KEY</code>, <code>ANTHROPIC_API_KEY</code>,
+        <code>AETHER_OLLAMA_URL</code>.
+      </p>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
